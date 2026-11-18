@@ -126,6 +126,10 @@
   const boardSize = canvas.width / SIZE;
   let storageErrorMessage = "";
   let activeProfileKey = "default";
+  let hiddenRun = null;
+  let gameTabPaused = false;
+  let savedPlayerName = "";
+  let tutorialSeen = false;
 
   function loadWallet(profileKey = activeProfileKey) {
     const defaults = { coins: 5, energy: 5, idleMs: 0, library: [], ownedSkins: ["MINT"], equippedSkin: "MINT", rewardedMilestones: [], games: [], bestScore: 0 };
@@ -154,15 +158,26 @@
   }
 
   try {
+    const storedName = localStorage.getItem("englishEraPlayerName:v1");
+    if (/^[A-Za-z0-9]{8,65}$/.test(storedName || "")) {
+      savedPlayerName = storedName;
+      activeProfileKey = storedName.toLocaleLowerCase();
+    }
     const storedProfile = localStorage.getItem("englishEraProfile:v1");
-    if (storedProfile === "default" || /^[A-Za-z0-9]{8,65}$/.test(storedProfile || "")) {
+    if (!savedPlayerName && /^[A-Za-z0-9]{8,65}$/.test(storedProfile || "")) {
+      savedPlayerName = storedProfile;
+      activeProfileKey = storedProfile.toLocaleLowerCase();
+    } else if (!savedPlayerName && storedProfile === "default") {
       activeProfileKey = storedProfile || "default";
     }
+    tutorialSeen = localStorage.getItem("englishEraTutorialSeen:v1") === "true";
   } catch (error) {
     console.error("Không thể đọc hồ sơ English Era đang hoạt động.", error);
     storageErrorMessage = "Bộ nhớ trình duyệt không khả dụng; tiến trình có thể không được lưu.";
   }
   state.wallet = loadWallet(activeProfileKey);
+  $("#player-name").value = savedPlayerName;
+  $("#guide-name").value = savedPlayerName;
 
   function saveWallet() {
     try {
@@ -173,6 +188,28 @@
       storageErrorMessage = "Không thể lưu tiến trình trong trình duyệt này.";
     }
     updateWalletUI();
+  }
+
+  function savePlayerName(name) {
+    if (displayNameError(name)) return;
+    try {
+      localStorage.setItem("englishEraPlayerName:v1", name);
+    } catch (error) {
+      console.error("Không thể lưu tên người chơi English Era.", error);
+      storageErrorMessage = "Không thể lưu tên người chơi trong trình duyệt này.";
+      updateWalletUI();
+    }
+  }
+
+  function markTutorialSeen() {
+    tutorialSeen = true;
+    try {
+      localStorage.setItem("englishEraTutorialSeen:v1", "true");
+    } catch (error) {
+      console.error("Không thể lưu trạng thái hướng dẫn English Era.", error);
+      storageErrorMessage = "Không thể lưu trạng thái hướng dẫn trong trình duyệt này.";
+      updateWalletUI();
+    }
   }
 
   function updateWalletUI() {
@@ -205,11 +242,19 @@
   }
 
   function switchTab(id) {
-    if (id !== "play-page" && state.playing && !state.paused) {
+    const leavingGame = id !== "play-page" && $("#play-page").classList.contains("active");
+    if (leavingGame && state.playing && !state.paused) {
       state.paused = true;
+      gameTabPaused = true;
       document.body.classList.add("game-paused");
       $("#pause-button").textContent = "▶";
       drawBoard();
+    }
+    if (id === "play-page" && (state.gameEnded || gameTabPaused)) {
+      gameTabPaused = false;
+      closeDialog(dialogs["gameover-modal"]);
+      resetRun(0);
+      return;
     }
     document.body.classList.toggle("play-active", id === "play-page");
     document.querySelectorAll(".tab-page").forEach((page) => page.classList.toggle("active", page.id === id));
@@ -732,6 +777,23 @@
   function closeDialog(dialog) {
     if (dialog.open) dialog.close();
   }
+
+  document.querySelectorAll(".modal-close").forEach((button) => {
+    button.addEventListener("click", () => {
+      const dialog = button.closest("dialog");
+      if (!dialog) return;
+      if (dialog.id === "quiz-modal") {
+        if (state.quizPending) timeoutQuiz();
+        else finishQuiz();
+      } else if (dialog.id === "revival-modal") {
+        $("#end-after-crash").click();
+      } else if (dialog.id === "exchange-dialogue-modal") {
+        $("#cancel-exchange-button").click();
+      } else {
+        closeDialog(dialog);
+      }
+    });
+  });
 
   function speakGuide(text) {
     if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) return;
@@ -1705,6 +1767,7 @@
   }
 
   function resetRun(bonus = 0) {
+    gameTabPaused = false;
     selectProfile(getName());
     if (!canStartRun()) {
       switchTab("hub-page");
@@ -1775,6 +1838,13 @@
   }
 
   function begin() {
+    const playerName = getName();
+    if (playerName && tutorialSeen) {
+      savePlayerName(playerName);
+      selectProfile(playerName);
+      resetRun(0);
+      return;
+    }
     $("#guide-heading").textContent = "Cùng tìm hiểu cách chơi";
     $("#guide-welcome-copy").classList.add("hidden");
     $("#guide-welcome-actions").classList.add("hidden");
@@ -1795,6 +1865,8 @@
     }
     $("#player-name").value = guideName.value;
     updateNameValidity($("#player-name"));
+    savePlayerName(guideName.value);
+    markTutorialSeen();
     if ("speechSynthesis" in window) window.speechSynthesis.cancel();
     closeDialog(dialogs["guide-modal"]);
     resetRun(0);
@@ -1891,12 +1963,12 @@
     state.youtubePlayerPromise = loadYouTubeApi()
       .then((youtube) => new Promise((resolve, reject) => {
         state.youtubePlayer = new youtube.Player("youtube-player-container", {
-          width: "320",
-          height: "180",
+          width: "200",
+          height: "200",
           videoId: "ZX2mjf9dFH8",
           playerVars: {
             autoplay: 0,
-            controls: 1,
+            controls: 0,
             loop: 1,
             playlist: "ZX2mjf9dFH8",
             playsinline: 1,
@@ -1910,7 +1982,7 @@
               else event.target.pauseVideo();
             },
             onAutoplayBlocked: () => {
-              $("#sound-toggle").title = "Nếu nhạc chưa phát, hãy nhấn nút phát trên video YouTube.";
+              $("#sound-toggle").title = "Nhạc bị trình duyệt chặn. Hãy tắt rồi bật lại nút âm thanh để thử phát lại.";
             },
             onStateChange: (event) => {
               if (event.data !== youtube.PlayerState.ENDED) return;
@@ -2111,6 +2183,8 @@
     }
     $("#player-name").value = guideName.value;
     updateNameValidity($("#player-name"));
+    savePlayerName(guideName.value);
+    markTutorialSeen();
     if ("speechSynthesis" in window) window.speechSynthesis.cancel();
     closeDialog(dialogs["guide-modal"]);
     resetRun(0);
@@ -2135,6 +2209,11 @@
       showGuideWelcome();
     }, 300);
   });
+  $("#welcome-close").addEventListener("click", () => {
+    localStorage.setItem("englishEraWelcomeSeen", "true");
+    $("#welcome-screen").hidden = true;
+    document.body.classList.remove("welcome-active");
+  });
   $("#welcome-screen").addEventListener("keydown", (event) => {
     if (event.key === "Enter" && event.target.id !== "welcome-enter") $("#welcome-enter").click();
   });
@@ -2152,7 +2231,10 @@
     const input = $(`#${id}`);
     input.addEventListener("input", () => {
       updateNameValidity(input);
-      if (!state.playing && !displayNameError(input.value)) selectProfile(input.value);
+      if (!displayNameError(input.value)) {
+        savePlayerName(input.value);
+        if (!state.playing) selectProfile(input.value);
+      }
     });
   });
   $("#guide-name").addEventListener("keydown", (event) => { if (event.key === "Enter") $("#tutorial-next").click(); });
@@ -2219,7 +2301,6 @@
   $("#writing-start").addEventListener("click", startWriting);
   $("#writing-submit").addEventListener("click", submitWriting);
   $("#writing-cancel").addEventListener("click", () => closeDialog(dialogs["recovery-modal"]));
-  $("#recovery-close").addEventListener("click", () => closeDialog(dialogs["recovery-modal"]));
   dialogs["recovery-modal"].addEventListener("close", () => {
     if (state.writingInterval) clearInterval(state.writingInterval);
     state.writingInterval = null;
@@ -2288,8 +2369,23 @@
   state.snake = [{ x: 3, y: 4 }, { x: 2, y: 4 }];
   state.apple = { x: 6, y: 1 };
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) stopGameAudio();
-    else resumeGameAudio();
+    if (document.hidden) {
+      stopGameAudio();
+      hiddenRun = state.playing && !state.paused && state.movementStarted
+        ? { startedAt: Date.now(), elapsed: state.elapsed, duration: state.duration }
+        : null;
+      return;
+    }
+
+    resumeGameAudio();
+    if (!hiddenRun) return;
+    const elapsedWhileHidden = (Date.now() - hiddenRun.startedAt) / 1000;
+    const timedOutWhileHidden = hiddenRun.elapsed + elapsedWhileHidden >= hiddenRun.duration;
+    hiddenRun = null;
+    if (state.gameEnded || timedOutWhileHidden) {
+      closeDialog(dialogs["gameover-modal"]);
+      resetRun(0);
+    }
   });
   $("#rank-content").append($("#leaderboard-panel"));
   $("#hub-guide-content").append($("#howto-panel"));

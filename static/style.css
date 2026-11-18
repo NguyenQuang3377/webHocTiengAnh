@@ -131,14 +131,16 @@ button { cursor: pointer; }
 .winner-spark { align-self: flex-start; margin-left: auto; color: #ddb843; }
 .page-footer { display: flex; justify-content: space-between; padding: 28px 0 20px; margin-top: 24px; border-top: 1px solid #e3deea; color: #9993a5; font: 8px var(--mono); letter-spacing: .055em; }
 .footer-dot { color: #c879a0; margin: 0 4px; }
-.music-player-frame { width: min(320px, 100%); aspect-ratio: 16 / 9; margin: 22px auto 0; }
-.music-player-frame iframe { display: block; width: 100%; height: 100%; }
+.music-player-frame { position: fixed; right: 100%; bottom: 0; width: 200px; height: 200px; margin: 0; overflow: hidden; pointer-events: none; }
+.music-player-frame iframe { display: block; width: 200px; height: 200px; }
 .countdown-overlay { position: absolute; inset: 0; display: grid; place-items: center; background: #e9f4d8d9; color: #40583f; font: 46px var(--pixel); }
 .hidden { display: none !important; }
 .modal { position: fixed; width: min(450px, calc(100% - 32px)); max-height: min(85vh, 760px); overflow: auto; padding: 25px; border: 2px solid #29253d; border-radius: 4px; background: #fffefa; color: var(--ink); box-shadow: 7px 7px 0 #29253d; }
 .modal::backdrop { background: #24213599; backdrop-filter: blur(3px); }
 .modal-close-form { position: absolute; top: 7px; right: 8px; }
-.modal-close { width: 27px; height: 27px; border: 1px solid #e5dfeb; background: #fff; color: #777187; font-size: 18px; line-height: 1; }
+.modal-close { position: absolute; top: 8px; right: 8px; display: grid; place-items: center; width: 30px; height: 30px; padding: 0; border: 2px solid #432b62; background: #f5d9e5; color: #49345f; font-size: 20px; line-height: 1; cursor: pointer; }
+.modal-close:hover { background: #eab9d4; color: #2f1e46; }
+.modal-close:focus-visible, .welcome-close:focus-visible { outline: 3px solid #6c4ca0; outline-offset: 3px; }
 .modal-kicker { color: #7d6bc8; font: 8px var(--mono); letter-spacing: .09em; }
 .modal-kicker span { color: #dc6c99; margin-right: 5px; }
 .quiz-progress { display: flex; justify-content: space-between; margin: 18px 0 10px; color: #a09aad; font: 8px var(--mono); }
@@ -286,6 +288,8 @@ body:not(.welcome-active) .save-quiz-word { font-weight: 800; }
 .history-empty { color: #9993a5; font-size: 11px; line-height: 1.5; }
 
 .welcome-screen { position: fixed; z-index: 3000; inset: 0; display: grid; place-items: center; overflow: hidden; padding: 28px; background: linear-gradient(180deg, #8653d9 0%, #b05ed4 46%, #f285bf 72%, #5e73e8 100%); transition: opacity .28s ease, visibility .28s ease; }
+.welcome-close { position: absolute; z-index: 2; top: 16px; right: 16px; display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 2px solid #34234f; background: #fffaf0; box-shadow: 3px 3px #34234f; color: #49345f; font-size: 26px; line-height: 1; cursor: pointer; }
+.welcome-close:hover { background: #f3c7df; }
 .welcome-screen::before { position: absolute; inset: 0; content: ""; opacity: .31; background-image: linear-gradient(#f6dcff 1px, transparent 1px), linear-gradient(90deg, #f6dcff 1px, transparent 1px); background-size: 24px 24px; pointer-events: none; }
 .welcome-screen::after { position: absolute; right: 0; bottom: 0; left: 0; height: 28%; content: ""; background: linear-gradient(180deg, transparent, #465bd8 70%); clip-path: polygon(0 26%, 9% 26%, 9% 0, 14% 0, 14% 49%, 23% 49%, 23% 16%, 29% 16%, 29% 40%, 39% 40%, 39% 5%, 44% 5%, 44% 45%, 52% 45%, 52% 21%, 59% 21%, 59% 47%, 68% 47%, 68% 0, 74% 0, 74% 35%, 84% 35%, 84% 15%, 90% 15%, 90% 49%, 100% 49%, 100% 100%, 0 100%); opacity: .75; pointer-events: none; }
 .welcome-screen[hidden] { display: none; }

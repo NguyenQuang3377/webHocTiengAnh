@@ -15,12 +15,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css', v=31) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css', v=33) }}">
   </head>
   <body>
     <div class="sky sky-one"></div>
     <div class="sky sky-two"></div>
     <section class="welcome-screen" id="welcome-screen" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+      <button class="welcome-close" id="welcome-close" type="button" aria-label="Đóng">×</button>
       <div class="welcome-scene" aria-hidden="true">
         <span class="welcome-star star-one">✦</span><span class="welcome-star star-two">✧</span>
         <span class="welcome-star star-three">✦</span><span class="welcome-star star-four">✧</span>
@@ -235,6 +236,7 @@
     </main>
 
     <dialog class="modal" id="quiz-modal">
+      <button class="modal-close" type="button" aria-label="Đóng">×</button>
       <div class="modal-kicker"><span>✳</span> ĂN TÁO · THỬ THÁCH TỪ VỰNG</div>
       <div class="quiz-progress"><span id="quiz-level">CẤP 01 · B1</span><span id="quiz-topic">TỪ VỰNG</span></div>
       <h2 id="quiz-question">Đang tải câu hỏi…</h2>
@@ -250,6 +252,7 @@
     </dialog>
 
     <dialog class="modal small-modal" id="guide-modal" tabindex="-1">
+      <button class="modal-close" type="button" aria-label="Đóng">×</button>
       <div class="modal-kicker">HƯỚNG DẪN CỦA GIÁO SƯ RẮN</div>
       <h2 id="guide-heading">Chào mừng đến với Word Snake</h2>
       <p class="guide-welcome-copy" id="guide-welcome-copy">Học cách điều khiển rắn, săn táo và mở rộng vốn từ trên bàn chơi pixel.</p>
@@ -292,6 +295,7 @@
     </dialog>
 
     <dialog class="modal small-modal" id="revival-modal">
+      <button class="modal-close" type="button" aria-label="Đóng">×</button>
       <div class="modal-kicker">CƠ HỘI CUỐI · THỬ THÁCH NÓI</div>
       <h2>Nói tiếng Anh<br>để quay lại trò chơi.</h2>
       <p class="revival-topic" id="revival-topic"></p>
@@ -304,6 +308,7 @@
     </dialog>
 
     <dialog class="modal small-modal" id="gameover-modal">
+      <button class="modal-close" type="button" aria-label="Đóng">×</button>
       <div class="modal-kicker">HOÀN THÀNH LƯỢT CHƠI · TUYỆT VỜI</div>
       <h2 id="gameover-title">Chơi hay lắm!</h2>
       <div class="run-summary"><div><strong id="final-score">0</strong><span>ĐIỂM ĐẠT ĐƯỢC</span></div><div><strong id="final-apples">0</strong><span>TÁO ĐÃ ĂN</span></div><div><strong id="run-coins">0</strong><span>XU NHẬN ĐƯỢC</span></div></div>
@@ -315,6 +320,7 @@
     </dialog>
 
     <dialog class="modal small-modal" id="exchange-dialogue-modal">
+      <button class="modal-close" type="button" aria-label="Đóng">×</button>
       <div class="modal-kicker">NGHE VÀ HỌC · LƯỢT CHƠI THƯỞNG</div>
       <h2>Nghe thật kỹ<br>để nhận điểm thưởng.</h2>
       <p class="conversation-instructions">Thử thách không bắt buộc. Để bắt đầu với 200 điểm thưởng, hãy nghe hội thoại tiếng Anh (không phụ đề) và trả lời đúng cả 3 câu hỏi. Bạn cũng có thể bỏ qua và chơi ngay.</p>
@@ -350,6 +356,6 @@
     <script>
       window.ENGLISH_ERA_INITIAL_TAB = {{ (initial_tab or "") | tojson }};
     </script>
-    <script src="{{ url_for('static', filename='game.js', v=21) }}" defer></script>
+    <script src="{{ url_for('static', filename='game.js', v=25) }}" defer></script>
   </body>
 </html>
