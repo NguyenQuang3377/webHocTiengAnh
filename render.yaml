@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: english-era-webhoc3377
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.4
+      - key: PUBLIC_BASE_URL
+        value: https://english-era-webhoc3377.onrender.com
+      - key: SNAKE_DATABASE
+        value: /tmp/snake_game.db

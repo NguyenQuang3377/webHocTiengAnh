@@ -13,6 +13,12 @@ python app.py
 
 Open `http://localhost:5000`. Set `PORT` to change the listening port and `SNAKE_DATABASE` to select the SQLite database file.
 
+## Deploy on Render
+
+The included `render.yaml` configures a free Render web service. In Render, choose **New → Blueprint**, connect this GitHub repository, and deploy the `english-era-webhoc3377` service. The public URL is `https://english-era-webhoc3377.onrender.com` if that service name is available.
+
+The free service uses an ephemeral filesystem. Its SQLite leaderboard database can be reset when the service restarts or is redeployed, and the service may take a short time to wake after inactivity. Use persistent storage or a managed database if leaderboard history must be retained.
+
 For a public English Era domain, set `PUBLIC_BASE_URL` before starting the server:
 
 ```powershell
