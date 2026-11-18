@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#c5c6ff">
+    <meta name="description" content="English Era - học tiếng Anh qua trò chơi rắn pixel-art.">
+    <meta name="keywords" content="English Era, học tiếng Anh, trò chơi học từ vựng">
+    <link rel="canonical" href="{{ public_base_url }}/english-era">
+    <meta property="og:title" content="English Era">
+    <meta property="og:description" content="Học tiếng Anh qua trò chơi rắn pixel-art.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ public_base_url }}/english-era">
+    <title>English Era — Học tiếng Anh qua trò chơi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css', v=31) }}">
+  </head>
+  <body>
+    <div class="sky sky-one"></div>
+    <div class="sky sky-two"></div>
+    <section class="welcome-screen" id="welcome-screen" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+      <div class="welcome-scene" aria-hidden="true">
+        <span class="welcome-star star-one">✦</span><span class="welcome-star star-two">✧</span>
+        <span class="welcome-star star-three">✦</span><span class="welcome-star star-four">✧</span>
+        <span class="welcome-cloud cloud-one"></span><span class="welcome-cloud cloud-two"></span>
+        <span class="welcome-moon"></span>
+        <div class="welcome-horizon"></div>
+        <div class="welcome-pole pole-one"></div><div class="welcome-pole pole-two"></div><div class="welcome-pole pole-three"></div>
+      </div>
+      <div class="welcome-window">
+        <div class="welcome-titlebar">
+          <span class="welcome-app-icon">EE</span>
+          <span>ENGLISH_ERA.EXE</span>
+          <span class="welcome-window-buttons" aria-hidden="true"><i>−</i><i>□</i><i>×</i></span>
+        </div>
+        <div class="welcome-window-body">
+          <span class="welcome-kicker">CUỘC PHIÊU LƯU PIXEL BẰNG TIẾNG ANH</span>
+          <h1 class="welcome-title" id="welcome-title">Chào mừng đến<br><span>English Era</span></h1>
+          <p>Học từ mới. Chơi vui. Tiến bộ mỗi ngày.</p>
+          <button class="welcome-enter" id="welcome-enter" type="button">VÀO CHƠI <span aria-hidden="true">▶</span></button>
+        </div>
+        <div class="welcome-status"><span>● SẴN SÀNG</span><span>NHẤN ENTER ĐỂ BẮT ĐẦU</span></div>
+      </div>
+      <span class="welcome-note note-left" aria-hidden="true">★<small>TỪ MỚI</small></span>
+      <span class="welcome-note note-right" aria-hidden="true">✦<small>PHIÊU LƯU MỚI</small></span>
+    </section>
+    <main class="page">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Trang chủ Word Snake">
+          <span class="brand-icon">W<span>S</span></span>
+          <span>WORD<span class="brand-accent">SNAKE</span></span>
+        </a>
+        <div class="top-meta"><span class="live-dot"></span><span>GÓC TRÒ CHƠI HẰNG NGÀY</span><span class="top-divider"></span><span>TIẾNG ANH · B1–B2</span></div>
+        <div class="audio-controls">
+          <input id="music-files" type="file" accept=".mp3,audio/mpeg" multiple hidden>
+          <button class="music-select" id="music-select" type="button">Choose Music</button>
+          <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="false">♪ <span>Sound On</span></button>
+        </div>
+        <div class="energy-tools">
+          <div class="energy-display" aria-label="Energy">
+            <span>⚡</span><strong>ENERGY</strong><span class="energy-cells" id="energy-cells" aria-hidden="true"></span><b id="energy-count">5/5</b>
+          </div>
+          <span class="coin-display"><span aria-hidden="true">●</span><b id="coin-count">5</b><small>COINS</small></span>
+          <button class="recovery-button" id="recovery-open" type="button">RECOVERY</button>
+        </div>
+      </header>
+
+      <section class="intro">
+        <div>
+          <div class="eyebrow"><span class="spark">✳</span> HỌC TIẾNG ANH QUA TỪNG Ô PIXEL</div>
+          <h1>Săn táo nhanh.<br><span>Giỏi tiếng Anh hơn.</span></h1>
+          <p class="intro-copy">Điều khiển chú rắn, học từ vựng mới và chinh phục bảng xếp hạng hôm nay.</p>
+        </div>
+        <div class="intro-badge" aria-hidden="true"><div class="badge-snake">〰</div><span>KHÔNG CẦN<br>ĐĂNG NHẬP</span></div>
+      </section>
+
+      <nav class="main-nav" aria-label="Điều hướng chính">
+        <button class="nav-tab active" type="button" data-tab="hub-page" aria-selected="true">HUB</button>
+        <button class="nav-tab" type="button" data-tab="play-page" aria-selected="false">PLAY</button>
+        <button class="nav-tab" type="button" data-tab="results-page" aria-selected="false">RESULTS</button>
+        <button class="nav-tab" type="button" data-tab="rank-page" aria-selected="false">RANK</button>
+        <button class="nav-tab" type="button" data-tab="review-page" aria-selected="false">FLASHCARDS</button>
+        <button class="nav-tab" type="button" data-tab="library-page" aria-selected="false">LIBRARY</button>
+        <button class="nav-tab" type="button" data-tab="clothes-page" aria-selected="false">CLOTHES</button>
+        <button class="nav-tab" type="button" data-tab="info-page" aria-selected="false">INFO</button>
+      </nav>
+
+      <section class="tab-page hub-page active" id="hub-page" aria-label="Trang tổng quan">
+        <div class="hub-heading">
+          <div><span class="welcome-kicker">HÀNH TRÌNH HỌC TIẾNG ANH</span><h2>Trung tâm người chơi</h2><p>Chọn nơi bạn muốn đến, xem tiến độ và quay lại mê cung bất cứ lúc nào.</p></div>
+          <div class="hub-avatar" aria-label="Trạng thái rắn pixel"><span class="avatar-snake">●━━</span><small id="snake-status">SẴN SÀNG CHƠI</small></div>
+        </div>
+        <section class="score-ticker" aria-label="Năm người đứng đầu trực tiếp">
+          <span class="ticker-label">TOP 5 HIỆN TẠI</span><div class="ticker-window"><div class="ticker-track" id="top-five-ticker"><span>Đang tải thành tích hôm nay…</span></div></div>
+        </section>
+        <div class="hub-panels">
+          <div id="hub-guide-content"></div>
+          <div id="hub-winner-content"></div>
+          <div class="hub-shortcuts">
+            <button type="button" data-go-tab="play-page">▶ CHƠI NGAY</button>
+            <button type="button" data-go-tab="review-page">▤ ÔN TỪ VỰNG</button>
+            <button type="button" data-go-tab="clothes-page">✦ CỬA HÀNG TRANG PHỤC</button>
+          </div>
+        </div>
+        <div class="hub-status-card"><span>MỤC TIÊU HÔM NAY</span><b>Học thêm vài từ mới, từng quả táo một.</b><span id="hub-progress">0 từ đã lưu · 0 lượt chơi</span></div>
+        <div class="hub-leaderboard" id="hub-leaderboard-content"></div>
+      </section>
+
+      <section class="game-layout tab-page" id="play-page" aria-label="Chơi">
+        <div class="game-column">
+          <section class="game-frame">
+            <div class="frame-bar">
+              <span class="frame-lights"><i></i><i></i><i></i></span>
+              <span class="frame-title">RAN_SAN_TU.EXE</span>
+              <span class="frame-version">V 1.0</span>
+            </div>
+            <div class="game-hud">
+              <div><span class="hud-label">SCORE</span><strong id="score">0000</strong></div>
+              <div><span class="hud-label">APPLES</span><strong id="apples">00</strong></div>
+              <div><span class="hud-label">TIME</span><strong id="time-left">01:30</strong></div>
+              <div class="hud-right"><span class="hud-label">SNAKE SKIN</span><span id="skin-label" class="skin-label">MINT</span></div>
+            </div>
+            <div class="board-wrap">
+              <canvas id="game-board" width="512" height="512" aria-label="Bàn chơi rắn 10 nhân 10"></canvas>
+              <div class="screen-overlay" id="overlay">
+                <div class="overlay-card">
+                  <div class="pixel-mascot" aria-hidden="true"><span class="mascot-eyes">▪ ▪</span><span class="mascot-mouth">⌣</span></div>
+                  <span class="overlay-kicker">CHÀO MỪNG BẠN ĐẾN VỚI TRÒ CHƠI</span>
+                  <h2>Sẵn sàng<br>lớn khôn chưa?</h2>
+                  <p>Giáo sư Rắn đang chờ đồng hành cùng bạn trên hành trình học từ mới.</p>
+                  <button class="primary-button" id="start-button" type="button">BẮT ĐẦU CHƠI <span>→</span></button>
+                  <span class="micro-copy">LƯỢT CHƠI 60–180 GIÂY · TĂNG MỖI 30 GIÂY</span>
+                </div>
+              </div>
+              <div class="countdown-overlay hidden" id="countdown-overlay"><span id="countdown-number">3</span></div>
+              <div class="touch-controls" role="group" aria-label="Nút điều khiển hướng">
+                <button type="button" data-direction="up" aria-label="Đi lên">↑</button>
+                <button type="button" data-direction="left" aria-label="Đi sang trái">←</button>
+                <button type="button" data-direction="down" aria-label="Đi xuống">↓</button>
+                <button type="button" data-direction="right" aria-label="Đi sang phải">→</button>
+              </div>
+            </div>
+            <div class="board-footer"><span class="game-info-chip"><i class="key-icon">↑</i><i class="key-icon">←</i><i class="key-icon">↓</i><i class="key-icon">→</i> HOẶC WASD ĐỂ DI CHUYỂN</span><span class="game-info-chip">MÊ CUNG PIXEL 10 × 10</span></div>
+          </section>
+
+          <div class="control-row">
+            <div class="name-field"><label for="player-name">PLAYER NAME</label><input id="player-name" type="text" minlength="8" maxlength="65" pattern="[A-Za-z0-9]{8,65}" placeholder="Example: SnakePlayer8" autocomplete="nickname" autocapitalize="off" spellcheck="false" aria-describedby="player-name-note"><span class="name-note" id="player-name-note">8–65 characters, letters and numbers only; no spaces.</span></div>
+            <label class="duration-field"><span>GAME LENGTH</span><select id="duration"><option value="60">60 seconds</option><option value="90" selected>90 seconds</option><option value="120">120 seconds</option><option value="150">150 seconds</option><option value="180">180 seconds (3 minutes)</option></select></label>
+            <button class="pause-button" id="pause-button" type="button" disabled aria-label="Tạm dừng trò chơi">Ⅱ</button>
+          </div>
+
+          <div class="play-shortcuts">
+            <button class="text-action" type="button" data-go-tab="review-page"><span class="action-icon">▤</span><span><b>FLASHCARDS</b><small>Study saved words.</small></span><span class="action-arrow">↗</span></button>
+            <button class="text-action" type="button" data-go-tab="library-page"><span class="action-icon">◷</span><span><b>MY LIBRARY</b><small>Review your collection.</small></span><span class="action-arrow">↗</span></button>
+          </div>
+        </div>
+
+        <aside class="side-column">
+          <section class="leaderboard panel" id="leaderboard-panel">
+            <div class="section-heading"><span class="section-icon trophy">♛</span><div><h2>Bảng xếp hạng hôm nay</h2><p>10 NGƯỜI CHƠI DẪN ĐẦU</p></div><span class="live-tag"><i></i> TRỰC TIẾP</span></div>
+            <div class="leader-date" id="leader-date">THÀNH TÍCH HÔM NAY</div>
+            <ol class="leader-list" id="leader-list"><li class="leader-empty">Đang tải bảng xếp hạng…</li></ol>
+            <div class="leader-foot"><span>CÙNG CHƠI, CÙNG LẬP KỶ LỤC</span><span>↻ LÀM MỚI MỖI NGÀY</span></div>
+          </section>
+
+          <section class="howto panel" id="howto-panel">
+            <div class="section-heading"><span class="section-icon book">✳</span><div><h2>Cách chơi</h2><p>HƯỚNG DẪN NHANH</p></div></div>
+            <div class="howto-row"><span class="step-number">01</span><span>Mỗi quả táo được <b>+5 điểm</b>. Mỗi quả tiếp theo tăng thêm 3 điểm.</span></div>
+            <div class="howto-row"><span class="step-number">02</span><span>Mỗi quả táo mở câu hỏi trong <b>10 giây</b>. Trả lời đúng, rắn dài gấp đôi; quá giờ rắn vẫn lớn nhưng không được điểm táo.</span></div>
+            <div class="howto-row"><span class="step-number">03</span><span>Tránh gai xuất hiện mỗi <b>5 giây</b>. Chạm gai sẽ để lại bia mộ; bạn có thể hồi sinh một lần bằng thử thách nói 30 giây.</span></div>
+            <div class="howto-row"><span class="step-number">04</span><span>Học từ vựng nghề nghiệp để mở khóa <b>màu rắn mới</b>. Người đứng đầu bảng xếp hạng ngày sẽ đội vương miện pixel khi chơi.</span></div>
+            <div class="howto-row"><span class="step-number">05</span><span>Đạt <b>ít nhất 500 điểm trong lượt trước</b> để mở tùy chọn nghe hội thoại và nhận 200 điểm đầu lượt tiếp theo.</span></div>
+            <div class="bonus-note"><span>♪</span> Chọn file MP3 trên thiết bị của bạn. Nhạc chỉ phát trong trình duyệt, bắt đầu khi rắn di chuyển và tự đổi bài ngẫu nhiên mỗi 30 giây. Tệp nhạc không được tải lên.</div>
+          </section>
+
+          <section class="daily-winner panel" id="daily-winner-panel"><div class="winner-crown">♛</div><div><span>NHÀ VÔ ĐỊCH HÔM NAY</span><b>Chinh phục ngôi đầu để đội vương miện</b><small>Người có tổng điểm cao nhất hôm nay sẽ đội vương miện pixel khi chơi.</small></div><span class="winner-spark">✳</span></section>
+        </aside>
+      </section>
+
+      <section class="tab-page content-page" id="results-page" aria-label="Kết quả">
+        <div class="page-panel">
+          <div class="section-heading"><span class="section-icon">◷</span><div><h2>Kết quả của tôi</h2><p>LƯỢT CHƠI GẦN ĐÂY · XU ĐÃ NHẬN</p></div></div>
+          <div class="results-summary" id="results-summary"></div>
+          <p class="results-status" id="results-status"></p>
+          <div class="history-list" id="tab-history-list"><p class="history-empty">Nhập tên người chơi trong mục Play để xem lịch sử chơi.</p></div>
+        </div>
+      </section>
+
+      <section class="tab-page content-page" id="rank-page" aria-label="Xếp hạng">
+        <div id="rank-content"></div>
+      </section>
+
+      <section class="tab-page content-page" id="review-page" aria-label="Thẻ từ">
+        <div class="page-panel review-panel">
+          <div class="section-heading"><span class="section-icon book">▤</span><div><h2>Ôn tập thẻ từ</h2><p>CHỌN TỪ · LẬT THẺ · ĐOÁN NGHĨA</p></div></div>
+          <div class="review-toolbar"><span>Chọn những từ bạn muốn ôn tập</span><span id="review-selection-count">0 từ được chọn</span><button class="primary-button" id="review-start" type="button" disabled>BẮT ĐẦU ÔN TẬP →</button></div>
+          <p class="review-hint" id="review-hint">Lưu từ trong câu đố hoặc mở Thư viện để chọn từ cần ôn tập.</p>
+          <div class="review-word-list" id="review-word-list"></div>
+          <div class="flashcard-stage hidden" id="flashcard-stage">
+            <div class="study-card-wrap"><button class="study-card" id="study-card" type="button" aria-label="Đoán nghĩa rồi lật thẻ từ"><span class="study-card-label">ĐOÁN NGHĨA · NHẤN ĐỂ LẬT THẺ</span><strong id="study-word"></strong><span id="study-pronunciation" class="study-pronunciation hidden"></span><span id="study-definition" class="study-definition hidden"></span></button><button class="word-audio hidden" id="study-audio" type="button" aria-label="Nghe cách phát âm từ này">🔊</button></div>
+            <div class="study-controls"><button class="subtle-button" id="study-skip" type="button">TÔI CẦN ÔN THÊM</button><span id="study-progress"></span><button class="primary-button" id="study-knew" type="button">TÔI ĐÃ BIẾT ✓</button></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-page content-page" id="library-page" aria-label="Thư viện">
+        <div class="page-panel">
+          <div class="section-heading"><span class="section-icon book">▤</span><div><h2>Thư viện của tôi</h2><p id="library-count">0 TỪ ĐÃ LƯU</p></div></div>
+          <p class="library-hint">Trong câu đố, nhấn “＋ LƯU TỪ” để thêm từ vựng vào đây.</p>
+          <div class="library-list" id="library-list"></div>
+        </div>
+      </section>
+
+      <section class="tab-page content-page" id="clothes-page" aria-label="Trang phục">
+        <div class="page-panel">
+          <div class="section-heading"><span class="section-icon trophy">✦</span><div><h2>Trang phục rắn</h2><p>MỞ KHÓA GIAO DIỆN PIXEL · 100 XU MỖI BỘ</p></div></div>
+          <p class="clothes-status" id="clothes-status"></p>
+          <button class="subtle-button crown-preview-button" id="crown-preview-button" type="button">XEM THỬ VƯƠNG MIỆN TRÊN RẮN</button>
+          <div class="clothes-grid" id="clothes-grid"></div>
+        </div>
+      </section>
+
+      <section class="tab-page content-page" id="info-page" aria-label="Bản thu âm">
+        <div class="page-panel">
+          <div class="section-heading"><span class="section-icon">●</span><div><h2>Thông tin bài nói</h2><p>BẢN THU ÂM ĐƯỢC LƯU TRÊN THIẾT BỊ NÀY</p></div></div>
+          <p class="info-intro">Bản ghi chỉ được lưu trong trình duyệt trên thiết bị này và được lọc theo tên người chơi hiện tại.</p>
+          <div class="speaking-recordings" id="speaking-recordings" aria-live="polite"><p class="info-empty">Đang tải bản ghi…</p></div>
+        </div>
+      </section>
+
+      <div class="music-player-frame" id="youtube-player-container" aria-label="Trình phát nhạc YouTube"></div>
+      <footer class="page-footer"><span>RẮN SĂN TỪ <span class="footer-dot">●</span> HỌC MÀ CHƠI</span><span>DÀNH CHO NHỮNG TÂM HỒN HAM HỌC <span class="footer-dot">✳</span></span></footer>
+    </main>
+
+    <dialog class="modal" id="quiz-modal">
+      <div class="modal-kicker"><span>✳</span> ĂN TÁO · THỬ THÁCH TỪ VỰNG</div>
+      <div class="quiz-progress"><span id="quiz-level">CẤP 01 · B1</span><span id="quiz-topic">TỪ VỰNG</span></div>
+      <h2 id="quiz-question">Đang tải câu hỏi…</h2>
+      <div class="quiz-timer-row" id="quiz-timer-row"><span>THỜI GIAN TRẢ LỜI</span><strong id="quiz-timer">00:10</strong></div>
+      <div class="answer-list" id="answer-list"></div>
+      <section class="quiz-result hidden" id="quiz-result" aria-live="polite">
+        <strong class="quiz-result-title" id="quiz-result-title"></strong>
+        <p id="quiz-result-detail"></p>
+        <button class="save-quiz-word" id="save-quiz-word" type="button">＋ THÊM TỪ VÀO THƯ VIỆN</button>
+      </section>
+      <p class="modal-hint" id="quiz-hint">Trả lời đúng để rắn dài gấp đôi!</p>
+      <button class="primary-button modal-continue hidden" id="quiz-continue" type="button">CHƠI TIẾP <span>→</span></button>
+    </dialog>
+
+    <dialog class="modal small-modal" id="guide-modal" tabindex="-1">
+      <div class="modal-kicker">HƯỚNG DẪN CỦA GIÁO SƯ RẮN</div>
+      <h2 id="guide-heading">Chào mừng đến với Word Snake</h2>
+      <p class="guide-welcome-copy" id="guide-welcome-copy">Học cách điều khiển rắn, săn táo và mở rộng vốn từ trên bàn chơi pixel.</p>
+      <div class="guide-stage">
+        <div class="teacher-figure" aria-label="Giáo sư Rắn đang chỉ vào hướng dẫn">
+          <svg class="teacher-svg" viewBox="0 0 96 112" role="img" aria-hidden="true" shape-rendering="crispEdges">
+            <rect x="28" y="8" width="40" height="6" fill="#49352d"/><rect x="20" y="14" width="56" height="28" fill="#49352d"/>
+            <rect x="24" y="19" width="48" height="29" fill="#f3bd91"/><rect x="18" y="25" width="7" height="16" fill="#f3bd91"/><rect x="71" y="25" width="7" height="16" fill="#f3bd91"/>
+            <rect x="30" y="29" width="13" height="9" fill="#e7f6f3"/><rect x="53" y="29" width="13" height="9" fill="#e7f6f3"/>
+            <rect x="27" y="27" width="19" height="4" fill="#253b43"/><rect x="50" y="27" width="19" height="4" fill="#253b43"/><rect x="45" y="31" width="5" height="3" fill="#253b43"/>
+            <rect x="34" y="32" width="4" height="4" fill="#253b43"/><rect x="57" y="32" width="4" height="4" fill="#253b43"/>
+            <rect x="40" y="43" width="17" height="4" fill="#8d4a47"/>
+            <rect x="18" y="53" width="60" height="34" fill="#57c3c0"/><rect x="27" y="87" width="19" height="20" fill="#34495f"/><rect x="52" y="87" width="19" height="20" fill="#34495f"/>
+            <rect x="22" y="107" width="25" height="5" fill="#40352f"/><rect x="51" y="107" width="25" height="5" fill="#40352f"/>
+            <g class="teacher-arm"><rect x="69" y="55" width="10" height="24" fill="#57c3c0"/><rect x="77" y="36" width="9" height="26" fill="#f3bd91"/><rect x="82" y="30" width="12" height="9" fill="#f3bd91"/><rect x="90" y="26" width="6" height="8" fill="#253b43"/></g>
+            <rect x="11" y="57" width="10" height="24" fill="#57c3c0"/><rect x="8" y="76" width="12" height="8" fill="#f3bd91"/>
+          </svg>
+        </div>
+        <section class="lesson-card" aria-live="polite">
+          <div class="lesson-counter" id="tutorial-counter">RULE 1/5</div>
+          <h3 id="tutorial-title"></h3>
+          <p class="lesson-note" id="tutorial-note"></p>
+          <button class="lesson-audio" id="tutorial-replay" type="button">▶ Nghe hướng dẫn</button>
+        </section>
+      </div>
+      <canvas class="tutorial-demo" id="tutorial-demo" width="320" height="160" aria-label="Minh họa luật chơi"></canvas>
+      <div class="guide-welcome-actions" id="guide-welcome-actions">
+        <button class="subtle-button" id="tutorial-skip" type="button">BỎ QUA · CHƠI NGAY</button>
+        <button class="primary-button" id="tutorial-read" type="button">XEM HƯỚNG DẪN <span>→</span></button>
+      </div>
+      <div class="tutorial-controls hidden" id="tutorial-controls">
+        <button class="subtle-button" id="tutorial-back" type="button">← Luật trước</button>
+        <span class="tutorial-progress" id="tutorial-progress">1/5</span>
+        <button class="primary-button" id="tutorial-next" type="button">LUẬT TIẾP THEO <span>→</span></button>
+        <div class="tutorial-skip-row">
+          <button class="subtle-button" id="tutorial-skip-step" type="button">BỎ QUA HƯỚNG DẪN · CHƠI NGAY</button>
+        </div>
+      </div>
+      <div class="name-prompt"><label for="guide-name">TÊN HIỂN THỊ</label><input id="guide-name" type="text" minlength="8" maxlength="65" pattern="[A-Za-z0-9]{8,65}" placeholder="Ví dụ: SnakePlayer8" autocomplete="nickname" autocapitalize="off" spellcheck="false" aria-describedby="guide-name-note"><span class="name-note" id="guide-name-note">8–65 ký tự, chỉ gồm chữ cái và chữ số, không có dấu cách.</span></div>
+    </dialog>
+
+    <dialog class="modal small-modal" id="revival-modal">
+      <div class="modal-kicker">CƠ HỘI CUỐI · THỬ THÁCH NÓI</div>
+      <h2>Nói tiếng Anh<br>để quay lại trò chơi.</h2>
+      <p class="revival-topic" id="revival-topic"></p>
+      <p class="speaking-instructions">Nhấn bắt đầu và nói tiếng Anh trong 30 giây. Bản thu cần có tiếng nói để bạn được hồi sinh.</p>
+      <div class="speaking-timer" id="speaking-timer">00:30</div>
+      <p class="speaking-status" id="speaking-status" role="status">Nhấn nút ghi âm để cho phép sử dụng micrô.</p>
+      <button class="primary-button" id="start-speaking-button" type="button">BẮT ĐẦU GHI ÂM</button>
+      <button class="primary-button" id="revive-button" type="button" disabled>HỒI SINH <span>→</span></button>
+      <button class="subtle-button" id="end-after-crash" type="button">Kết thúc lượt chơi</button>
+    </dialog>
+
+    <dialog class="modal small-modal" id="gameover-modal">
+      <div class="modal-kicker">HOÀN THÀNH LƯỢT CHƠI · TUYỆT VỜI</div>
+      <h2 id="gameover-title">Chơi hay lắm!</h2>
+      <div class="run-summary"><div><strong id="final-score">0</strong><span>ĐIỂM ĐẠT ĐƯỢC</span></div><div><strong id="final-apples">0</strong><span>TÁO ĐÃ ĂN</span></div><div><strong id="run-coins">0</strong><span>XU NHẬN ĐƯỢC</span></div></div>
+      <p class="modal-hint" id="save-status">Đang lưu điểm…</p>
+      <div class="exchange-card hidden" id="exchange-card"><span class="exchange-icon">↻</span><div><b>Đạt ít nhất 500 điểm để mở lượt chơi thưởng</b><small>Điểm lượt này được lưu vào bảng xếp hạng. Hoàn thành thử thách nghe để bắt đầu lượt sau với 200 điểm thưởng; điểm thưởng không tính vào kỷ lục.</small></div></div>
+      <button class="primary-button hidden" id="exchange-button" type="button">CHƠI LẠI · NHẬN 200 ĐIỂM <span>→</span></button>
+      <button class="primary-button gameover-action" id="play-again-button" type="button">Bắt đầu lượt mới không có điểm thưởng</button>
+      <button class="primary-button gameover-action" id="open-results-button" type="button">Xem mục kết quả</button>
+    </dialog>
+
+    <dialog class="modal small-modal" id="exchange-dialogue-modal">
+      <div class="modal-kicker">NGHE VÀ HỌC · LƯỢT CHƠI THƯỞNG</div>
+      <h2>Nghe thật kỹ<br>để nhận điểm thưởng.</h2>
+      <p class="conversation-instructions">Thử thách không bắt buộc. Để bắt đầu với 200 điểm thưởng, hãy nghe hội thoại tiếng Anh (không phụ đề) và trả lời đúng cả 3 câu hỏi. Bạn cũng có thể bỏ qua và chơi ngay.</p>
+      <p class="modal-hint" id="conversation-status">Nghe hội thoại tiếng Anh để mở khóa 200 điểm thưởng.</p>
+      <button class="primary-button" id="play-conversation-button" type="button">PHÁT HỘI THOẠI <span>♪</span></button>
+      <section class="conversation-quiz hidden" id="conversation-quiz" aria-live="polite">
+        <div class="conversation-progress" id="conversation-progress"></div>
+        <h3 id="conversation-question"></h3>
+        <div class="answer-list" id="conversation-answers"></div>
+        <p class="modal-hint" id="conversation-answer-status"></p>
+      </section>
+      <button class="primary-button modal-continue" id="continue-exchange-button" type="button" disabled>BẮT ĐẦU VỚI 200 ĐIỂM <span>→</span></button>
+      <button class="subtle-button" id="skip-exchange-button" type="button">Bỏ qua · Bắt đầu lượt mới không có điểm thưởng</button>
+      <button class="subtle-button" id="cancel-exchange-button" type="button">Quay lại kết quả</button>
+    </dialog>
+
+    <dialog class="modal recovery-modal" id="recovery-modal">
+      <button class="modal-close recovery-close" id="recovery-close" type="button" aria-label="Đóng">×</button>
+      <div class="modal-kicker">HỒI PHỤC NĂNG LƯỢNG · LUYỆN VIẾT</div>
+      <h2>Hồi phục năng lượng</h2>
+      <p class="recovery-disclaimer">Bài viết được chấm cục bộ theo tiêu chí IELTS mẫu và không gửi đi đâu. Đây là điểm ước lượng để luyện tập, không thay thế giám khảo IELTS.</p>
+      <div class="recovery-settings">
+        <label>CHỦ ĐỀ<select id="recovery-topic"></select></label>
+        <label>SỐ TỪ MỤC TIÊU<select id="recovery-target"><option value="180">180 từ · 15 phút</option><option value="250">250 từ · 40 phút</option></select></label>
+      </div>
+      <div class="writing-prompt" id="writing-prompt">Chọn chủ đề và bắt đầu bài luyện viết.</div>
+      <div class="writing-meta"><span id="writing-word-count">0 từ</span><strong id="writing-timer">15:00</strong></div>
+      <div class="writing-start-row"><button class="primary-button" id="writing-start" type="button">BẮT ĐẦU VIẾT →</button><span>Hoặc nhập trực tiếp để bắt đầu tính giờ</span></div>
+      <textarea id="writing-answer" rows="10" placeholder="Viết câu trả lời bằng tiếng Anh…"></textarea>
+      <div id="writing-results" class="writing-results hidden"></div>
+      <div class="recovery-actions"><button class="subtle-button writing-cancel-button" id="writing-cancel" type="button">CANCEL</button><button class="primary-button hidden" id="writing-submit" type="button">NỘP BÀI</button></div>
+    </dialog>
+    <script>
+      window.ENGLISH_ERA_INITIAL_TAB = {{ (initial_tab or "") | tojson }};
+    </script>
+    <script src="{{ url_for('static', filename='game.js', v=21) }}" defer></script>
+  </body>
+</html>
